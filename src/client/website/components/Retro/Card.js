@@ -20,13 +20,14 @@ import {
   QueryShape
 } from '../../services/websocket/query';
 import ConfirmActionDialog from '../../containers/ConfirmActionDialog';
+import ConfirmMergeDialog from '../../containers/ConfirmDialog';
 import Votes from '../../components/Votes';
 
 class Card extends Component {
   constructor(props) {
     super(props);
     const { card } = props;
-    this.state = { isEditing: false, text: card.text };
+    this.state = { isEditing: false, isMerging: false, text: card.text };
     this.addVote = this.vote.bind(this, true);
     this.removeVote = this.vote.bind(this, false);
   }
@@ -69,6 +70,25 @@ class Card extends Component {
     }
   };
 
+  startMerging = (cardToMerge) => {
+    this.setState({ isMerging: true, cardToMerge });
+  }
+
+  mergeCards = () => {
+    const { socket } = this.context;
+    const { cardToMerge: { id: toBeMergedId, text: toBeMergedText } } = this.state;
+    const { editCard, removeCard, card: { id, text } } = this.props;
+    const mergedText = `${text}\n\n${toBeMergedText}`;
+
+    editCard(socket, { id, text: mergedText });
+    removeCard(socket, toBeMergedId);
+    this.endMerging();
+  }
+
+  endMerging = () => {
+    this.setState({ isMerging: false });
+  }
+
   editCard = () => {
     const { socket } = this.context;
     const { text } = this.state;
@@ -88,12 +108,31 @@ class Card extends Component {
     }
   };
 
+  handleDragStart = (e, card) => {
+    e.dataTransfer.setData('card', JSON.stringify(card));
+  }
+
+  handleCardDrop = (e) => {
+    const { card } = this.props;
+    const cardToMerge = JSON.parse(e.dataTransfer.getData('card'));
+    const { id, columnId } = cardToMerge;
+    if (card.id !== id && card.columnId === columnId) {
+      this.startMerging(cardToMerge);
+    }
+  }
+
   render() {
     const { userId, votes, userSubmmitedVotes, card, classes, removeCard, retroStep } = this.props;
-    const { isEditing, text } = this.state;
+    const { isEditing, isMerging, text } = this.state;
     const { socket } = this.context;
     return (
-      <MaterialCard className={classes.card}>
+      <MaterialCard
+        className={classes.card}
+        draggable
+        onDragStart={e => this.handleDragStart(e, card)}
+        onDragOver={e => e.preventDefault()}
+        onDrop={e => this.handleCardDrop(e)}
+      >
         <CardContent key="content">
           {isEditing ? (
             <TextField
@@ -151,6 +190,13 @@ class Card extends Component {
             addUserVote={this.addVote}
             removeUserVote={this.removeVote}
           />}
+        <ConfirmMergeDialog
+          key="merge-confirm"
+          textContent={<FormattedMessage id="retro.confirm-merge-card" />}
+          open={isMerging}
+          onConfirm={this.mergeCards}
+          onCancel={this.endMerging}
+        />
       </MaterialCard>
     );
   }

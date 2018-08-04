@@ -32,11 +32,25 @@ class Column extends Component {
     this.setState({ text: e.target.value });
   };
 
+  handleCardDrop = (e) => {
+    const { socket } = this.context;
+    const { editCard, column: { id: columnId }, cards } = this.props;
+    const { id } = JSON.parse(e.dataTransfer.getData('card'));
+
+    if (cards.find(c => c.id === id && c.columnId !== columnId)) {
+      editCard(socket, { id, columnId });
+    }
+  }
+
   render() {
     const { column, cards, classes } = this.props;
 
     return (
-      <div className={classes.column}>
+      <div
+        className={classes.column}
+        onDragOver={e => e.preventDefault()}
+        onDrop={e => this.handleCardDrop(e)}
+      >
         <div className={classes.header}>
           <Typography
             type="headline"
@@ -73,6 +87,7 @@ Column.propTypes = {
   })).isRequired,
   // Functions
   addCard: PropTypes.func.isRequired,
+  editCard: PropTypes.func.isRequired,
   addMessage: PropTypes.func.isRequired,
   // Queries
   addCardQuery: PropTypes.shape(QueryShape).isRequired,

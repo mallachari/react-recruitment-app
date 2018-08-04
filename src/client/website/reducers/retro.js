@@ -248,10 +248,10 @@ const ACTION_HANDLERS = {
         const newState = deepClone(state);
         const editCard = payload;
         const cardToUpdate = newState[RETRO_CARDS_KEY]
-          .find(column => column.id === editCard.id);
+          .find(card => card.id === editCard.id);
 
         if (cardToUpdate) {
-          delete editCard.new;
+          delete cardToUpdate.new;
           Object.assign(cardToUpdate, editCard);
         }
 
