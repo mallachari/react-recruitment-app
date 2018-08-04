@@ -1,14 +1,17 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { IconButton, Typography } from 'material-ui';
+import { IconButton, Typography, Tooltip } from 'material-ui';
 import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
+import Sort from 'material-ui-icons/Sort';
+import { FormattedMessage } from 'react-intl';
 import Card from '../../containers/Retro/Card';
+import deepClone from '../../services/utils/deepClone';
 import { QUERY_ERROR_KEY, queryFailed, QueryShape } from '../../services/websocket/query';
 
 class Column extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '' };
+    this.state = { text: '', sorting: false };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -36,14 +39,21 @@ class Column extends Component {
     const { socket } = this.context;
     const { editCard, column: { id: columnId }, cards } = this.props;
     const { id } = JSON.parse(e.dataTransfer.getData('card'));
-
     if (cards.find(c => c.id === id && c.columnId !== columnId)) {
       editCard(socket, { id, columnId });
     }
   }
 
+  toggleSorting = () => {
+    this.setState((prevState) => {
+      const state = { sorting: !prevState.sorting };
+      return state;
+    });
+  }
+
   render() {
-    const { column, cards, classes } = this.props;
+    const { column, cards, retroStep, classes } = this.props;
+    const { sorting } = this.state;
 
     return (
       <div
@@ -58,13 +68,37 @@ class Column extends Component {
             onDoubleClick={this.startEditing}
           >{column.name}
           </Typography>
-          <IconButton className={classes.addCardIcon} onClick={this.addCard}>
-            <PlaylistAdd className={classes.actionIcon} />
-          </IconButton>
+          <div>
+            {retroStep === 'vote' && (
+              <Tooltip
+                key={column.id}
+                placement="left"
+                title={sorting
+                  ? <FormattedMessage id="columns.column-sort-by-votes-off" />
+                  : <FormattedMessage id="columns.column-sort-by-votes-on" />
+                }
+              >
+                <IconButton className={classes.sortIcon} onClick={this.toggleSorting}>
+                  <Sort className={classes.actionIcon} />
+                </IconButton>
+              </Tooltip>
+            )}
+            <IconButton className={classes.addCardIcon} onClick={this.addCard}>
+              <PlaylistAdd className={classes.actionIcon} />
+            </IconButton>
+          </div>
         </div>
-        {cards.filter(card => column.id === card.columnId).map(card => (
-          <Card card={card} key={card.id} />
-        ))}
+        {sorting ? (
+          deepClone(cards).filter(card => column.id === card.columnId)
+            .sort((a, b) => b.votes.length - a.votes.length)
+            .map(card => (
+              <Card card={card} key={card.id} />
+            ))
+        ) : (
+          cards.filter(card => column.id === card.columnId).map(card => (
+            <Card card={card} key={card.id} />
+          ))
+        )}
       </div>
     );
   }
@@ -85,6 +119,7 @@ Column.propTypes = {
     columnId: PropTypes.string.isRequired,
     text: PropTypes.string.isRequired
   })).isRequired,
+  retroStep: PropTypes.string.isRequired,
   // Functions
   addCard: PropTypes.func.isRequired,
   editCard: PropTypes.func.isRequired,

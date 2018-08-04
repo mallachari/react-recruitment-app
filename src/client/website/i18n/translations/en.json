@@ -37,7 +37,9 @@
     "column-name": "Name",
     "no-columns": "Lets add some columns now!",
     "icon": "Icon",
-    "column-name-required": "Column name is required"
+    "column-name-required": "Column name is required",
+    "column-sort-by-votes-on": "Sort by votes on",
+    "column-sort-by-votes-off": "Sort by votes off"
   },
   "start-retro": {
     "header": "Start a retro",

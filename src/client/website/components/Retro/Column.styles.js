@@ -31,6 +31,16 @@ const styles = theme => ({
       color: theme.palette.good
     }
   },
+  sortIcon: {
+    float: 'left',
+    width: '32px',
+    height: '32px',
+    transition: 'all .2s ease',
+    color: theme.palette.midGrey,
+    '&:hover': {
+      color: theme.palette.good
+    }
+  },
   addCardContainer: {
     display: 'flex',
     flexFlow: 'row nowrap',

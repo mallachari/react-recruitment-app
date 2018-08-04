@@ -37,7 +37,9 @@
     "column-name": "Nazwa",
     "no-columns": "Dodajmy kolumny do retro.",
     "icon": "Ikona",
-    "column-name-required": "Nazwa kolumny jest wymagana"
+    "column-name-required": "Nazwa kolumny jest wymagana",
+    "column-sort-by-votes-on": "Włącz sortowanie po głosach",
+    "column-sort-by-votes-off": "Wyłącz sortowanie po głosach"
   },
   "start-retro": {
     "header": "Rozpocznij retrospektywę",
