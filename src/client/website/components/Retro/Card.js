@@ -76,11 +76,11 @@ class Card extends Component {
 
   mergeCards = () => {
     const { socket } = this.context;
-    const { cardToMerge: { id: toBeMergedId, text: toBeMergedText } } = this.state;
+    const { cardToMerge: { id: toBeMergedId, text: toBeMergedText, votes } } = this.state;
     const { editCard, removeCard, card: { id, text } } = this.props;
     const mergedText = `${text}\n\n${toBeMergedText}`;
 
-    editCard(socket, { id, text: mergedText });
+    editCard(socket, { id, text: mergedText, votes });
     removeCard(socket, toBeMergedId);
     this.endMerging();
   }

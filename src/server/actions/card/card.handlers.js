@@ -50,7 +50,7 @@ export default {
   },
   [ACTION_CARD_EDIT]: async (params, state) => {
     const { retroId, userId } = state;
-    const { text, id, addVote, removeVote, columnId } = params;
+    const { text, id, addVote, removeVote, columnId, votes } = params;
     const retro = await Retro.findById(retroId).populate('cards.authors');
     if (!retro.participates(userId)) {
       throw new Error('You are not participating in a retrospective.');
@@ -65,6 +65,7 @@ export default {
     }
     if (text) card.text = text;
     if (columnId) card.columnId = columnId;
+    if (votes) card.votes.push(...votes);
 
     const updatedRetro = await retro.save();
 
