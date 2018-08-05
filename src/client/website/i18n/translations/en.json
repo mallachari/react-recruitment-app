@@ -44,6 +44,9 @@
     "column-sort-by-votes-on": "Sort by votes on",
     "column-sort-by-votes-off": "Sort by votes off"
   },
+  "cards": {
+    "card-author-required-to-merge": "You need to be an author of a card to merge it with another one"
+  },
   "start-retro": {
     "header": "Start a retro",
     "description": "First, lets name the retrospective.",

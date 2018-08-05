@@ -44,6 +44,9 @@
     "column-sort-by-votes-on": "Włącz sortowanie po głosach",
     "column-sort-by-votes-off": "Wyłącz sortowanie po głosach"
   },
+  "cards": {
+    "card-author-required-to-merge": "Musisz być autorem kartki by dołączyć ją do innej"
+  },
   "start-retro": {
     "header": "Rozpocznij retrospektywę",
     "description": "Zacznijmy od nazwania tego retro.",

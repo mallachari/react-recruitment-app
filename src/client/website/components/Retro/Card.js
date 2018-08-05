@@ -80,9 +80,12 @@ class Card extends Component {
     const { socket } = this.context;
     const { cardToMerge: { id: toBeMergedId, text: toBeMergedText, votes } } = this.state;
     const { editCard, removeCard, card: { id, text } } = this.props;
-    const mergedText = `${text}\n\n${toBeMergedText}`;
 
-    editCard(socket, { id, text: mergedText, votes });
+    editCard(socket, {
+      id,
+      text: `${text}\n\n${toBeMergedText}`,
+      votes
+    });
     removeCard(socket, toBeMergedId);
     this.endMerging();
   }
@@ -115,11 +118,16 @@ class Card extends Component {
   }
 
   handleCardDrop = (e) => {
-    const { card } = this.props;
+    const { card, userId, addMessage } = this.props;
     const cardToMerge = JSON.parse(e.dataTransfer.getData('card'));
-    const { id, columnId } = cardToMerge;
+    const { id, columnId, authors } = cardToMerge;
+
     if (card.id !== id && card.columnId === columnId) {
-      this.startMerging(cardToMerge);
+      if (authors.find(a => a.id === userId)) {
+        this.startMerging(cardToMerge);
+      } else {
+        addMessage(<FormattedMessage id="cards.card-author-required-to-merge" />);
+      }
     }
   }
 
