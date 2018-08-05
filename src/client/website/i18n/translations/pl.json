@@ -12,7 +12,9 @@
     "remaining-votes": "Pozostało głosów",
     "previous-step": "Wróć do poprzedniego etapu spotkania",
     "next-step": "Przejdź do kolejnego etapu spotkania",
-    "search-form-placeholder": "Szukaj"
+    "search-form-placeholder": "Szukaj",
+    "download-action-points": "Eksportuj do pliku",
+    "confirm-download": "Czy na pewno chcesz pobrać?"
   },
   "retro-steps": {
     "write": "Zgłoś swoje spostrzeżenia",

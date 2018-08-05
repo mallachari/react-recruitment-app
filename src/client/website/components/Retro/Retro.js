@@ -21,6 +21,7 @@ import {
 } from '../../services/websocket/query';
 import Column from '../../containers/Retro/Column';
 import Steps from '../../containers/Retro/Steps';
+import DownloadButton from '../../containers/Retro/Download';
 import { initialsOf } from '../../services/utils/initials';
 
 class Retro extends Component {
@@ -78,6 +79,7 @@ class Retro extends Component {
                 </Tooltip>
               ))}
             </div>
+            <DownloadButton />
           </div>
         );
       case QUERY_STATUS_FAILURE:

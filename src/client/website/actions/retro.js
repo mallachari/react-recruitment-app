@@ -22,6 +22,9 @@ export const RETRO_EDIT_IN_PROGRESS = 'RETRO_EDIT_IN_PROGRESS';
 export const RETRO_EDIT_SUCCESS = 'RETRO_EDIT_SUCCESS';
 export const RETRO_EDIT_FAILURE = 'RETRO_EDIT_FAILURE';
 
+export const RETRO_START_DOWNLOAD = 'RETRO_START_DOWNLOAD';
+export const RETRO_STOP_DOWNLOAD = 'RETRO_STOP_DOWNLOAD';
+
 
 export const setRetroIdQueryParameter = retroId => (dispatch) => {
   const query = { r: retroId };
@@ -49,4 +52,12 @@ export const retroLeave = (socket, shareId) => (dispatch) => {
 export const retroEdit = (socket, edits) => (dispatch) => {
   socket.emit(ACTION_RETRO_EDIT, edits);
   dispatch({ type: RETRO_EDIT_IN_PROGRESS });
+};
+
+export const retroStartDownload = () => (dispatch) => {
+  dispatch({ type: RETRO_START_DOWNLOAD });
+};
+
+export const retroStopDownload = () => (dispatch) => {
+  dispatch({ type: RETRO_STOP_DOWNLOAD });
 };
