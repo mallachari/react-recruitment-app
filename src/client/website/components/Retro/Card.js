@@ -23,6 +23,8 @@ import ConfirmActionDialog from '../../containers/ConfirmActionDialog';
 import ConfirmMergeDialog from '../../containers/ConfirmDialog';
 import Votes from '../../components/Votes';
 
+const SEARCH_MIN_LENGTH = 2;
+
 class Card extends Component {
   constructor(props) {
     super(props);
@@ -122,12 +124,27 @@ class Card extends Component {
   }
 
   render() {
-    const { userId, votes, userSubmmitedVotes, card, classes, removeCard, retroStep } = this.props;
+    const {
+      userId,
+      votes,
+      userSubmmitedVotes,
+      card,
+      classes,
+      removeCard,
+      retroStep,
+      search
+    } = this.props;
     const { isEditing, isMerging, text } = this.state;
     const { socket } = this.context;
+
+    const cardClassNames = (search.length > SEARCH_MIN_LENGTH
+      && card.text.toLowerCase().indexOf(search.toLowerCase()) !== -1)
+      ? `${classes.card} ${classes.cardFiltered}`
+      : classes.card;
+
     return (
       <MaterialCard
-        className={classes.card}
+        className={cardClassNames}
         draggable
         onDragStart={e => this.handleDragStart(e, card)}
         onDragOver={e => e.preventDefault()}
@@ -218,6 +235,7 @@ Card.propTypes = {
     new: PropTypes.bool,
     authors: PropTypes.arrayOf(PropTypes.object).isRequired
   }).isRequired,
+  search: PropTypes.string.isRequired,
   // Functions
   editCard: PropTypes.func.isRequired,
   removeCard: PropTypes.func.isRequired,

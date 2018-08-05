@@ -1,6 +1,7 @@
 import { withStyles } from 'material-ui/styles';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { formValueSelector } from 'redux-form';
 import styles from './../../components/Retro/Card.styles';
 import Card from '../../components/Retro/Card';
 import {
@@ -11,13 +12,15 @@ import {
   RETRO_STEP_KEY,
   RETRO_VOTE_LIMIT_KEY
 } from '../../reducers/retro';
+import { SEARCH_FORM } from './Search';
 import { cardEdit, cardRemove } from '../../actions/card';
 import { USER_ID_KEY } from '../../reducers/user';
 import { addMessage } from '../../actions/layout';
 import { getUserSubmittedVotes } from '../../selectors/votes';
 
+const formSelector = formValueSelector(SEARCH_FORM);
 
-const mapStateToProps = ({ retro, user }) => ({
+const mapStateToProps = ({ retro, user, ...state }) => ({
   userId: user[USER_ID_KEY],
   users: retro[RETRO_USERS_KEY],
   retroStep: retro[RETRO_STEP_KEY],
@@ -25,7 +28,8 @@ const mapStateToProps = ({ retro, user }) => ({
   editCardQuery: retro[CARD_EDIT_QUERY_KEY],
   removeCardQuery: retro[CARD_REMOVE_QUERY_KEY],
   votes: retro[RETRO_VOTE_LIMIT_KEY],
-  userSubmmitedVotes: getUserSubmittedVotes({ retro, user })
+  userSubmmitedVotes: getUserSubmittedVotes({ retro, user }),
+  search: formSelector(state, 'search') || ''
 });
 
 const mapDispatchToProps = dispatch => ({

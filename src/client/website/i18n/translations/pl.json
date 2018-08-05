@@ -11,7 +11,8 @@
     "confirm-merge-card": "Czy na pewno chcesz połączyć?",
     "remaining-votes": "Pozostało głosów",
     "previous-step": "Wróć do poprzedniego etapu spotkania",
-    "next-step": "Przejdź do kolejnego etapu spotkania"
+    "next-step": "Przejdź do kolejnego etapu spotkania",
+    "search-form-placeholder": "Szukaj"
   },
   "retro-steps": {
     "write": "Zgłoś swoje spostrzeżenia",

@@ -5,6 +5,7 @@ import { AppBar, IconButton, Typography, Toolbar, Tooltip } from 'material-ui';
 import Chat from 'material-ui-icons/Chat';
 import PersonIcon from 'material-ui-icons/Person';
 import { HOMEPAGE_ROUTE_PATH } from '../../../routes/Homepage/MainRoutes';
+import Search from '../../../containers/Retro/Search';
 
 const Header = ({
   classes,
@@ -13,7 +14,8 @@ const Header = ({
   openChangeNameDialog,
   children,
   leaveRetro,
-  userName
+  userName,
+  location: { pathname }
 }, { socket }) => (
   <header>
     <AppBar
@@ -33,6 +35,7 @@ const Header = ({
           {headline}
         </Typography>
         <div className={classes.actionButtons}>
+          {pathname.indexOf('/retro') !== -1 && <Search />}
           {children}
           <IconButton onClick={openChangeNameDialog} className={classes.icon}>
             <PersonIcon />
@@ -63,6 +66,7 @@ Header.propTypes = {
   children: PropTypes.node.isRequired,
   openChangeNameDialog: PropTypes.func.isRequired,
   leaveRetro: PropTypes.func.isRequired,
+  location: PropTypes.object.isRequired,
   // Styles
   classes: PropTypes.shape({
     appBar: PropTypes.string.isRequired,

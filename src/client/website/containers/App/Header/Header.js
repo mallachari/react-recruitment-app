@@ -1,4 +1,5 @@
 import { withStyles } from 'material-ui/styles';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import styles from './../../../components/App/Header/Header.styles';
 import Header from './../../../components/App/Header';
@@ -18,6 +19,6 @@ const mapDispatchToProps = dispatch => ({
   leaveRetro: (socket, retroId) => dispatch(retroLeave(socket, retroId))
 });
 
-export default withStyles(styles)(
+export default withRouter(withStyles(styles)(
   connect(mapStateToProps, mapDispatchToProps)(Header)
-);
+));

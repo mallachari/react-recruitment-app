@@ -11,7 +11,8 @@
     "confirm-merge-card": "Are you sure you want to merge?",
     "remaining-votes": "Remaining votes",
     "previous-step": "Go back to the previous step",
-    "next-step": "Proceed to the next step of the meeting"
+    "next-step": "Proceed to the next step of the meeting",
+    "search-form-placeholder": "Search"
   },
   "retro-steps": {
     "write": "Write your thoughts",
