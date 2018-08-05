@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { IconButton, Typography, Tooltip } from 'material-ui';
 import PlaylistAdd from 'material-ui-icons/PlaylistAdd';
 import Sort from 'material-ui-icons/Sort';
+import ExpandLess from 'material-ui-icons/ExpandLess';
+import ExpandMore from 'material-ui-icons/ExpandMore';
 import { FormattedMessage } from 'react-intl';
 import Card from '../../containers/Retro/Card';
 import deepClone from '../../services/utils/deepClone';
@@ -11,7 +13,7 @@ import { QUERY_ERROR_KEY, queryFailed, QueryShape } from '../../services/websock
 class Column extends Component {
   constructor(props) {
     super(props);
-    this.state = { text: '', sorting: false };
+    this.state = { text: '', sorting: false, hidden: false };
   }
 
   componentWillReceiveProps(nextProps) {
@@ -45,15 +47,16 @@ class Column extends Component {
   }
 
   toggleSorting = () => {
-    this.setState((prevState) => {
-      const state = { sorting: !prevState.sorting };
-      return state;
-    });
+    this.setState(prevState => ({ sorting: !prevState.sorting }));
+  }
+
+  toggleHidden = () => {
+    this.setState(prevState => ({ hidden: !prevState.hidden }));
   }
 
   render() {
     const { column, cards, retroStep, classes } = this.props;
-    const { sorting } = this.state;
+    const { sorting, hidden } = this.state;
 
     return (
       <div
@@ -86,19 +89,30 @@ class Column extends Component {
             <IconButton className={classes.addCardIcon} onClick={this.addCard}>
               <PlaylistAdd className={classes.actionIcon} />
             </IconButton>
+            {hidden ? (
+              <IconButton className={classes.addCardIcon} onClick={this.toggleHidden}>
+                <ExpandMore className={classes.actionIcon} />
+              </IconButton>
+            ) : (
+              <IconButton className={classes.addCardIcon} onClick={this.toggleHidden}>
+                <ExpandLess className={classes.actionIcon} />
+              </IconButton>
+            )}
           </div>
         </div>
-        {sorting ? (
-          deepClone(cards).filter(card => column.id === card.columnId)
-            .sort((a, b) => b.votes.length - a.votes.length)
-            .map(card => (
+        {!hidden &&
+          (sorting ? (
+            deepClone(cards).filter(card => column.id === card.columnId)
+              .sort((a, b) => b.votes.length - a.votes.length)
+              .map(card => (
+                <Card card={card} key={card.id} />
+              ))
+          ) : (
+            cards.filter(card => column.id === card.columnId).map(card => (
               <Card card={card} key={card.id} />
             ))
-        ) : (
-          cards.filter(card => column.id === card.columnId).map(card => (
-            <Card card={card} key={card.id} />
-          ))
-        )}
+          )
+          )}
       </div>
     );
   }
