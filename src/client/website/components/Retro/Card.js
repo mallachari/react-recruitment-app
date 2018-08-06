@@ -265,3 +265,4 @@ Card.propTypes = {
 };
 
 export default onClickOutside(Card);
+export { Card };
