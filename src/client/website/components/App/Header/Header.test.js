@@ -7,10 +7,16 @@ const mockProps = {
   classes: {
     appBar: 'appBar',
     actionButtons: 'actionButtons',
-    appLogo: 'appLogo'
+    appLogo: 'appLogo',
+    headline: 'headline',
+    logoIcon: 'logoIcon',
+    icon: 'icon'
   },
-  openChangeNameDialog: () => {
-  }
+  location: {
+    pathname: '123'
+  },
+  openChangeNameDialog: () => {},
+  leaveRetro: () => {}
 };
 
 describe(`${Header.name} component`, () => {
@@ -20,7 +26,6 @@ describe(`${Header.name} component`, () => {
         <div className="test">Test</div>
       </Header>);
 
-    expect(wrapper.find('img'), 'img').to.have.length(1);
     expect(wrapper.find('div.test'), 'div.test').to.have.length(1);
   });
 });

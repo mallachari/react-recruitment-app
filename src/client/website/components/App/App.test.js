@@ -17,7 +17,10 @@ const mockProps = {
 const mockContext = {
   socket: {},
   store: configureMockStore()({
-    user: {}
+    user: {},
+    retro: {
+      join: {}
+    }
   })
 };
 
